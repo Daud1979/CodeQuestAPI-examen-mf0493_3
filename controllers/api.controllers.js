@@ -21,9 +21,9 @@ const { generateQuestions, getRandomQuestionsDB } = require('../services/questio
  *
  * @throws {Error} If an unexpected error occurs, a 500 status code is returned with the error message.
  */
-const getRandomQuestions = async (req, res) => {
+const getRandomQuestions = async (req, res) => {//este modificar
 	try {
-		let { amount } = req.query;
+		let { amount,difficulty } = req.query;
 		amount = parseInt(amount, 10);
 
 		//validation of amount
@@ -32,8 +32,10 @@ const getRandomQuestions = async (req, res) => {
 		} else if (amount > 30) {
 			amount = 30;
 		}
-
-		const randomQuestion = await getRandomQuestionsDB(amount);
+		
+		const datafilter={};
+		if (difficulty) { datafilter.difficulty=difficulty}
+		const randomQuestion = await getRandomQuestionsDB(amount,datafilter);
 		
 
 		res.status(200).json({
